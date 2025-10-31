@@ -40,7 +40,7 @@ export default function TransactionPage() {
 
     setIsLoading(true)
     
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://models-api-fraud.chiqo.site"
     const USER_ID = process.env.NEXT_PUBLIC_USER_ID || "user123"
     const endpoint = `${API_URL}/api/fraud/predict/batch`
     

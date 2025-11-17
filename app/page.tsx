@@ -14,7 +14,7 @@ import {
 import { useToast } from "@/hooks/use-toast"
 import { Send, AlertCircle } from "lucide-react"
 
-const PRESET_AMOUNTS = [10, 30, 50, 100, 200]
+const PRESET_AMOUNTS = [100, 500, 1000, 2500, 5000]
 
 type Strategy = "random" | "balanced" | "high_fraud_bias"
 
@@ -32,7 +32,7 @@ export default function TransactionPage() {
   const { toast } = useToast()
 
   const transactionCount = selectedAmount || (customAmount ? Number.parseInt(customAmount) : null)
-  const isValidRange = transactionCount && transactionCount >= 10 && transactionCount <= 1000
+  const isValidRange = transactionCount && transactionCount >= 1 && transactionCount <= 10000
   const showRangeError = transactionCount !== null && !isValidRange
 
   const handleSendTransactions = async () => {
@@ -40,8 +40,7 @@ export default function TransactionPage() {
 
     setIsLoading(true)
     
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://models-api-fraud.chiqo.site"
-    const USER_ID = process.env.NEXT_PUBLIC_USER_ID || "user123"
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
     const endpoint = `${API_URL}/api/fraud/predict/batch`
     
     const requestBody = {
@@ -52,7 +51,6 @@ export default function TransactionPage() {
     console.log("🚀 Enviando petición al backend...")
     console.log("📦 Request Body:", requestBody)
     console.log("🔗 URL:", endpoint)
-    console.log("👤 User ID:", USER_ID)
     
     try {
       // Timeout de 30 segundos
@@ -65,7 +63,6 @@ export default function TransactionPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-User-Id": USER_ID,
         },
         body: JSON.stringify(requestBody),
         signal: controller.signal,
@@ -158,21 +155,21 @@ export default function TransactionPage() {
 
             <Input
               type="number"
-              placeholder="Cantidad personalizada (10-1000)"
+              placeholder="Cantidad personalizada (1-10000)"
               value={customAmount}
               onChange={(e) => {
                 setCustomAmount(e.target.value)
                 setSelectedAmount(null)
               }}
               className="h-11 text-base"
-              min="10"
-              max="1000"
+              min="1"
+              max="10000"
             />
 
             {showRangeError && (
               <div className="mt-2 flex items-center gap-2 text-sm text-destructive">
                 <AlertCircle className="w-4 h-4" />
-                <span>La cantidad debe estar entre 10 y 1000</span>
+                <span>La cantidad debe estar entre 1 y 10000</span>
               </div>
             )}
           </div>

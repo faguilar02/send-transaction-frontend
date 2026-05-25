@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
-const API_URL = "https://models-api-fraud.chiqo.site/api"
+const API_URL = process.env.NEXT_PUBLIC_API_URL ? `${process.env.NEXT_PUBLIC_API_URL}/api` : "http://localhost:8000/api"
 const SIMULATION_ENDPOINT = `${API_URL}/fraud/predict/batch`
 const MIN_SAFE_INTERVAL_SECONDS = 5
 const MAX_INTERVAL_SECONDS = 3600
